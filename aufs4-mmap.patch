@@ -127,16 +127,15 @@ diff --git a/kernel/fork.c b/kernel/fork.c
 index 2e391c7..6c4215c 100644
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -477,7 +477,7 @@ static struct vm_area_struct *dup_vma(struct mm_struct *mm, struct mm_struct *oldmm, struct vm_area_struct *mpnt)
-                struct inode *inode = file_inode(file);
-                struct address_space *mapping = file->f_mapping;
+@@ -477,7 +477,7 @@ struct vm_area_struct *dup_vma(struct mm_struct *mm, struct mm_struct *oldmm, struct vm_area_struct *mpnt) {
+ 		struct inode *inode = file_inode(file);
+ 		struct address_space *mapping = file->f_mapping;
  
--               get_file(file);
-+               vma_get_file(tmp);
-                if (tmp->vm_flags & VM_DENYWRITE)
-                        atomic_dec(&inode->i_writecount);
-                i_mmap_lock_write(mapping);
-
+-		get_file(file);
++		vma_get_file(tmp);
+ 		if (tmp->vm_flags & VM_DENYWRITE)
+ 			atomic_dec(&inode->i_writecount);
+ 		i_mmap_lock_write(mapping);
 diff --git a/mm/Makefile b/mm/Makefile
 index 2ed4319..e3a53f5 100644
 --- a/mm/Makefile
